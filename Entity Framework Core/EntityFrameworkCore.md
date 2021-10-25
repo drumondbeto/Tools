@@ -278,7 +278,7 @@ Inclui o mapeamento das classes declaradas nas propriedades das entidades. (Clas
                         }
                 }
 
-    - Em seguida, dentro do método OnModelCreating em nosso ApplicationContext, na pasta Data, fazemos com que sejam encontradas todas as entidades mapeadas pelo Entity na pasta Data\Configurations:
+    - Em seguida, dentro do método OnModelCreating em nosso ApplicationContext, na pasta Data, fazemos com que sejam encontradas todas as entidades mapeadas pelo Entity na pasta .\Data\Configurations:
 
                 using Microsoft.EntityFrameworkCore;
 
