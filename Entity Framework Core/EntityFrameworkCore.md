@@ -87,7 +87,7 @@ ou pelo Console do NuGet:
     - Escolha LocalDB.
     - Conclua a instalação e depois intale o arquivo baixado com a extensão .msi
 
-## Estrutura do projeto
+## Estruturando o projeto
 
 ### Criando Entidades:
 
@@ -135,6 +135,32 @@ ou pelo Console do NuGet:
                         Entregue,
                 }
         }
+
+### Criando a classe de contexto:
+
+- Cria-se na raíz uma pasta Data;
+- Dentro desta pasta é criado um arquivo ApplicationContext.cs, onde será configurado o DbContext.
+- Cria-se no arquivo a classe ApplicationContext herdada da classe DbContext.
+
+#### OnConfiguring
+
+- Configurando a conexão com o Banco de Dados. Exemplo usando um banco local com SqlServer:
+
+        using System;
+        using CursoEFCore.Domain;
+        using Microsoft.EntityFrameworkCore;
+
+        namespace CursoEFCore.Data
+        {
+                // CLASSE RESPONSAVEL POR ESTABELECER UMA SESSÃO ENTRE A APLICAÇÃO E SEU BANCO DE DADOS
+                protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+                {   
+                        optionsBuilder.UseSqlServer("Data source=(localdb)\\mssqllocaldb;Initial Catalog=CursoEFCore;Integrated Security=true");
+                }
+
+- Outras strings de conexão:
+
+        https://www.connectionstrings.com/
 
 ## Migrations
 
