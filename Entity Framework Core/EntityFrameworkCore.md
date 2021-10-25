@@ -85,7 +85,7 @@ ou pelo Console do NuGet:
     - Faça o download e execute.
     - Selecione Download Media.
     - Escolha LocalDB.
-    - Conclua a instalação e depois intale o arquivo baixado com a extensão .msi .
+    - Conclua a instalação e depois intale o arquivo baixado com a extensão .msi
 
 ## Migrations
 
