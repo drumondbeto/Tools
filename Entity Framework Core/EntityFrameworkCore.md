@@ -278,7 +278,7 @@ Inclui o mapeamento das classes declaradas nas propriedades das entidades. (Clas
                         }
                 }
 
-    - Em seguida, dentro do método OnModelCreating em nosso ApplicationContext, na pasta Data, fazemos com que sejam encontradas todas as entidades mapeadas pelo Entity na pasta .\Data\Configurations:
+    - Em seguida, dentro do método OnModelCreating em nosso ApplicationContext, na pasta Data, fazemos com que sejam encontradas todas as entidades mapeadas pelo Entity:
 
                 using Microsoft.EntityFrameworkCore;
 
@@ -294,6 +294,12 @@ Inclui o mapeamento das classes declaradas nas propriedades das entidades. (Clas
                 }
 
 ## Migrations
+
+### Criando a sua primeira Migração:
+
+- Vá até a Terminar de sua preferencia e digite:
+
+        dotnet ef migrations add PrimeiraMigracao -p (caminho do projeto)
 
 ### Comando para Aplicar Migrações:
 
