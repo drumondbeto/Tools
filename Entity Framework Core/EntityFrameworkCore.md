@@ -77,7 +77,7 @@ ou pelo Console do NuGet:
     - Instala-se a extensao SQL Server (mssql).
     - Acesse a aba lateral SQL Server (ou Ctrl + Alt + D).
     - Add Connection.
-    - (localdb)\mssqllocaldb.
+    - (localdb)\mssqllocaldb
     - Insira um nome para o banco de dados (opcional).
     - Escolha o tipo de autentificacao (Sugestão: Integrated).
     - Escolha o nome que será exibido no menu lateral.
@@ -142,12 +142,10 @@ ou pelo Console do NuGet:
 - Dentro desta pasta é criado um arquivo ApplicationContext.cs, onde será configurado o DbContext.
 - Cria-se no arquivo a classe ApplicationContext herdada da classe DbContext.
 
-#### OnConfiguring
+#### Configurando a seção entre a aplicação e seu Banco de Dados
 
-- Configurando a conexão com o Banco de Dados. Exemplo usando um banco local com SqlServer:
+- Exemplo usando um banco local com SqlServer:
 
-        using System;
-        using CursoEFCore.Domain;
         using Microsoft.EntityFrameworkCore;
 
         namespace CursoEFCore.Data
@@ -161,6 +159,139 @@ ou pelo Console do NuGet:
 - Outras strings de conexão:
 
         https://www.connectionstrings.com/
+
+#### Mapeamento do Modelo de Dados
+
+- Criamos as classes que representarão as nossas entidades, na pasta Domain;
+- Criamos a classe ApplicationContext;
+
+- MODO 1, Empondo explicitamente sua entidade através de uma propriedade genérica DbSet no contexto da classe ApplicationContext:
+
+        using CursoEFCore.Domain;
+        using Microsoft.EntityFrameworkCore;
+
+        namespace CursoEFCore.Data
+        {
+                public class ApplicationContext : DbContext
+                {
+                        public DbSet<Pedido> Pedidos { get; set; }
+                }
+        }
+
+Inclui o mapeamento das classes declaradas nas propriedades das entidades. (Classes dependentes ou propriedades de navegação)
+
+
+- MODO 2, Expecificar no método OnModelCreating utilizando o Fluent API:
+
+        using CursoEFCore.Domain;
+        using Microsoft.EntityFrameworkCore;
+
+        namespace CursoEFCore.Data
+        {
+                public class ApplicationContext : DbContext
+                {
+                        protected override void OnModelCreating(ModelBuilder modelBuilder)
+                        {
+                                modelBuilder.Entity<Cliente>(p =>
+                                {
+                                        p.ToTable("Clientes");
+                                        // Adicionando colunas às tabelas:
+                                        p.HasKey(p => p.Id);
+                                        p.Property(p => p.Nome).HasColumnType("VARCHAR(80)").IsRequired();
+                                        p.Property(p => p.Telefone).HasColumnType("CHAR(11)");
+                                        p.Property(p => p.CEP).HasColumnType("CHAR(8)").IsRequired();
+                                        p.Property(p => p.Estado).HasColumnType("CHAR(2)").IsRequired();
+                                        p.Property(p => p.Cidade).HasMaxLength(60).IsRequired();
+                                        // Gera uma variavel automatica para uma string com no max 60 caracteres.
+                                        p.HasIndex(i => i.Telefone).HasDatabaseName("idx_cliente_telefone");
+                                });
+
+                                modelBuilder.Entity<Produto>(p =>
+                                {
+                                        p.ToTable("Produtos");
+                                        p.HasKey(p => p.Id);
+                                        p.Property(p => p.CodigoBarras).HasColumnType("VARCHAR(14)").IsRequired();
+                                        p.Property(p => p.Descricao).HasColumnType("VARCHAR(60)");
+                                        p.Property(p => p.Valor).IsRequired();
+                                        p.Property(p => p.TipoProduto).HasConversion<string>();
+                                        // Define como o Enum TipoProduto sera armazenado no banco de dados.
+                                });
+
+                                modelBuilder.Entity<Pedido>(p=>
+                                {
+                                        p.ToTable("Pedidos");
+                                        p.HasKey(p => p.Id);
+                                        p.Property(p => p.IniciadoEm).HasDefaultValueSql("GETDATE()").ValueGeneratedOnAdd();
+                                        p.Property(p => p.Status).HasConversion<string>();
+                                        p.Property(p => p.TipoFrete).HasConversion<int>();
+                                        p.Property(p => p.Observacao).HasColumnType("VARCHAR(512)");
+
+                                        // Configura o "Muitos para Um":
+                                        p.HasMany(p => p.Itens)
+                                                .WithOne(p => p.Pedido)
+                                                .OnDelete(DeleteBehavior.Cascade);
+                                                // Faz com que os itens do pedido sejam deletados em cascata ao apagar um pedido.
+
+                                                // .OnDelete(DeleteBehavior.Restrict); 
+                                                // Poderia ser utilizado para obrigar o usuario a apagar os itens primeiro para poder apagar o pedido.
+                                });
+
+                                modelBuilder.Entity<PedidoItem>(p =>
+                                {
+                                        p.ToTable("PedidoItens");
+                                        p.HasKey(p => p.Id);
+                                        p.Property(p => p.Quantidade).HasDefaultValue(1).IsRequired();
+                                        // Quando eu instanciar um Item de Pedido e não informar a quantidade, o valor será 1 por padrão.
+                                        p.Property(p => p.Valor).IsRequired();
+                                        p.Property(p => p.Desconto).IsRequired();
+                                });
+                        }
+                }
+        }
+
+
+- Modo 3 (Mais escalável):
+    - Criamos dentro da pasta Data uma pasta chamada Configurations;
+    - Dentro da pasta Configurations criamos um arquivo para cada entidade que desejamos criar em nossa base de dados, exemplo:
+
+                using CursoEFCore.Domain;
+                using Microsoft.EntityFrameworkCore;
+
+                namespace CursoEFCore.Data.Configurations
+                {
+                        public class ClienteConfigurations : IEntityTypeConfiguration<Cliente>
+                        {
+                                public void Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder<Cliente> builder)
+                                {
+                                // CRIANDO ENTIDADE APARTIR DA CLASSE EXISTENTE
+                                builder.ToTable("Clientes");
+                                // Adicionando colunas às tabelas:
+                                builder.HasKey(p => p.Id);
+                                builder.Property(p => p.Nome).HasColumnType("VARCHAR(80)").IsRequired();
+                                builder.Property(p => p.Telefone).HasColumnType("CHAR(11)");
+                                builder.Property(p => p.CEP).HasColumnType("CHAR(8)").IsRequired();
+                                builder.Property(p => p.Estado).HasColumnType("CHAR(2)").IsRequired();
+                                builder.Property(p => p.Cidade).HasMaxLength(60).IsRequired();
+
+                                builder.HasIndex(i => i.Telefone).HasDatabaseName("idx_cliente_telefone");
+                                }
+                        }
+                }
+
+    - Em seguida, dentro do método OnModelCreating em nosso ApplicationContext, na pasta Data, fazemos com que sejam encontradas todas as entidades mapeadas pelo Entity:
+
+                using Microsoft.EntityFrameworkCore;
+
+                namespace ASPNET.Data
+                {
+                        public class ApplicationContext : DbContext
+                        {
+                                protected override void OnModelCreating(ModelBuilder modelBuilder)
+                                {
+                                        modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationContext).Assembly);
+                                }
+                        }
+                }
 
 ## Migrations
 
