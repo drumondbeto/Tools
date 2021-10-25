@@ -93,48 +93,48 @@ ou pelo Console do NuGet:
 
 - Cria-se na raíz uma pasta Domain, para criar as Classes, nossas entidades. Exemplo de entidade:
 
-                using System.ComponentModel.DataAnnotations;
-                using System.ComponentModel.DataAnnotations.Schema;
+        using System.ComponentModel.DataAnnotations;
+        using System.ComponentModel.DataAnnotations.Schema;
 
-                namespace CursoEFCore.Domain
+        namespace CursoEFCore.Domain
+        {
+                // Data Annotation para atribuir esta classe a uma tabela no nosso banco de dados:
+                //[Table("Cliente")]      
+                public class Cliente
                 {
-                        // Data Annotation para atribuir esta classe a uma tabela no nosso banco de dados:
-                        //[Table("Cliente")]      
-                        public class Cliente
-                        {
-                                //[Key]         // Opcional
-                                public int Id { get; set; }
+                        //[Key]         // Opcional
+                        public int Id { get; set; }
 
-                                //[Column]
-                                public string Nome { get; set; }
+                        //[Column]
+                        public string Nome { get; set; }
 
-                                //[Column("Phone")]
-                                public string Telefone { get; set; }
+                        //[Column("Phone")]
+                        public string Telefone { get; set; }
 
-                                //[Column]
-                                public string CEP { get; set; }
+                        //[Column]
+                        public string CEP { get; set; }
 
-                                //[Column]
-                                public string Estado { get; set; }
+                        //[Column]
+                        public string Estado { get; set; }
 
-                                //[Column]
-                                public string Cidade { get; set; }
-                                
-                                public string Email { get; set; }
-                        }
+                        //[Column]
+                        public string Cidade { get; set; }
+                        
+                        public string Email { get; set; }
                 }
+        }
 
 - Cria-se na raíz uma pasta ValueObjects, onde ficará alguns Enums. Exemplo de Enum:
 
-                namespace CursoEFCore.ValueObjects
+        namespace CursoEFCore.ValueObjects
+        {
+                public enum StatusPedido
                 {
-                        public enum StatusPedido
-                        {
-                                Analise,
-                                Finalizado,
-                                Entregue,
-                        }
+                        Analise,
+                        Finalizado,
+                        Entregue,
                 }
+        }
 
 ## Migrations
 
