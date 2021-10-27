@@ -298,6 +298,7 @@ Inclui o mapeamento das classes declaradas nas propriedades das entidades. (Clas
 ### Requisitos:
 
 - Microsoft.EntityFrameworkCore.Design
+- Microsoft.EntityFrameworkCore.Tools
 
 ### Criando a sua primeira Migração:
 
