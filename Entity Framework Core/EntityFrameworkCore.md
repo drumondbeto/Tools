@@ -68,7 +68,6 @@ ou pelo Console do NuGet:
 - C#
 - "SQL Server (mssql)" (Caso seja este o BD escolhido)
 
-
 ## Banco de Dados
 
 ### Banco Local:
