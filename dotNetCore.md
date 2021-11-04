@@ -4,6 +4,6 @@
 
 ## Instalação do SDK do .NET Core
 
-- Acesse https://dotnet.microsoft.com/download
+- Acesse <https://dotnet.microsoft.com/download>
 - Escolha a plataforma que você irá utilizar
 - Faça o Download do .NET Core SDK

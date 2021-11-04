@@ -1,7 +1,9 @@
-# SQL Create DB
+# SQL Create and Deop DB
+
+## SQL Create DB
 
         CREATE DATABASE databasename;
 
-# SQL Drop DB
+## SQL Drop DB
 
         DROP DATABASE databasename;
