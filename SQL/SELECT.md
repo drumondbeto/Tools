@@ -1,6 +1,4 @@
-# Basic SQL Commands
-
-## SELECT
+# SELECT
 
 ### SELECT all
 - Returns all registers in the choosen table:
