@@ -1,22 +1,22 @@
-## Preparando o Ambiente:
+# Preparando o Ambiente
 
-### Usando o VS Code:
+## Usando o VS Code
 
 - Faça a instalação do SDK do .NET Core (acesse dot.net).
 - Faça a instalação do Banco de Dados desejado (Instruções abaixo).
 
-## Criando uma aplicação console pelo CLI do .NET Core:
+## Criando uma aplicação console pelo CLI do .NET Core
 
 - Crie uma solition:
-    - No prompt de comando, insira:
-            
+  - No prompt de comando, insira:
+
             dotnet new sln -n Curso
 
     No exemplo acima o "-n Curso" está informando que o nome da solução será "Curso".
 
-- Crie um projeto: 
-    - Insira:
-            
+- Crie um projeto:
+  - Insira:
+
             dotnet new console -n CursoEFCore -o Curso -f netcoreapp3.1
 
     No exemplo acima o "-o Curso" indica o diretorio em que será criado o projeto, caso a pasta "Curso" não exista, ela será criada.
@@ -24,28 +24,28 @@
     O "-f netcoreapp3.1" informa a versão do framework.
 
 - Adicione o seu projeto à sua solução:
-    - Insira:
+  - Insira:
 
             dotnet sln Curso.sln add Curso\CursoEFCore.csproj
-    
+
 - Abrindo seu projeto:
-    - Para abrir seu projeto no VS Code, digite:
+  - Para abrir seu projeto no VS Code, digite:
 
             code .
 
     - Para abrir seu projeto no Visual Studio, digite:
-    
+
             Curso.sln
 
 ## Instalando os pacotes do SqlServer
 
-### VS Code:
+### VS Code
 
 - No prompt, insira:
 
         dotnet add Curso\CursoEFCore.csproj package Microsoft.EntityFrameworkCore.SqlServer --verson 3.1.5
 
-### Visual Studio:
+### Visual Studio
 
 - Abra sua solução no Visual Studio.
 - Clique com o botão direito em "Dependencies".
@@ -62,8 +62,7 @@ ou pelo Console do NuGet:
 
         install-Package Microsoft.EntityFrameworkCore.SqlServer -version 3.1.5
 
-
-### Extensões Recomendadas:
+### Extensões Recomendadas
 
 - C#
 - "SQL Server (mssql)" (Caso seja este o BD escolhido)
@@ -88,7 +87,7 @@ ou pelo Console do NuGet:
 
 ## Estruturando o projeto
 
-### Criando Entidades:
+### Criando Entidades
 
 - Cria-se na raíz uma pasta Domain, para criar as Classes, nossas entidades. Exemplo de entidade:
 
@@ -135,7 +134,7 @@ ou pelo Console do NuGet:
                 }
         }
 
-### Criando a classe de contexto:
+### Criando a classe de contexto
 
 - Cria-se na raíz uma pasta Data;
 - Dentro desta pasta é criado um arquivo ApplicationContext.cs, onde será configurado o DbContext.
@@ -178,7 +177,6 @@ ou pelo Console do NuGet:
         }
 
 Inclui o mapeamento das classes declaradas nas propriedades das entidades. (Classes dependentes ou propriedades de navegação)
-
 
 - MODO 2, Expecificar no método OnModelCreating utilizando o Fluent API:
 
@@ -248,10 +246,9 @@ Inclui o mapeamento das classes declaradas nas propriedades das entidades. (Clas
                 }
         }
 
-
 - Modo 3 (Mais escalável):
-    - Criamos dentro da pasta Data uma pasta chamada Configurations;
-    - Dentro da pasta Configurations criamos um arquivo para cada entidade que desejamos criar em nossa base de dados, exemplo:
+  - Criamos dentro da pasta Data uma pasta chamada Configurations;
+  - Dentro da pasta Configurations criamos um arquivo para cada entidade que desejamos criar em nossa base de dados, exemplo:
 
                 using CursoEFCore.Domain;
                 using Microsoft.EntityFrameworkCore;
@@ -291,4 +288,3 @@ Inclui o mapeamento das classes declaradas nas propriedades das entidades. (Clas
                                 }
                         }
                 }
-

@@ -14,6 +14,10 @@ A Stack is an ordered items collection based on the L.I.F.O principle, Last In -
 
 A Queue is an ordered items collection based on the F.I.F.O principle, First In - First Out, otherwise the Stack, a new element is added in the end of the queue, called tail, and removed from the start, called head. An exemple is a bank queue.
 
+## Trees
+
+Trees are composted by knots, each knot has a parent, except the first one, named root, and the knots may have from none to many children.
+
 ## Hash Table
 
 Hash tables are data structures that combines a table with a hash function.
