@@ -7,7 +7,7 @@
 
 ## Criando a sua primeira Migração:
 
-- Vá até a Terminar de sua preferencia e digite:
+- Vá até a Terminal de sua preferencia e digite:
 
         dotnet ef migrations add PrimeiraMigracao -p (caminho do projeto)
 
